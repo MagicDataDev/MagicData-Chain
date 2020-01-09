@@ -54,7 +54,7 @@ public class Channel {
   private P2pHandler p2pHandler;
 
   @Autowired
-  private MdcNetHandler MdcNetHandler;
+  private MdcNetHandler mdcNetHandler;
 
   private ChannelManager channelManager;
 
@@ -100,10 +100,10 @@ public class Channel {
     msgQueue.setChannel(this);
     handshakeHandler.setChannel(this, remoteId);
     p2pHandler.setChannel(this);
-    MdcNetHandler.setChannel(this);
+    mdcNetHandler.setChannel(this);
 
     p2pHandler.setMsgQueue(msgQueue);
-    MdcNetHandler.setMsgQueue(msgQueue);
+    mdcNetHandler.setMsgQueue(msgQueue);
   }
 
   public void publicHandshakeFinished(ChannelHandlerContext ctx, HelloMessage msg) {
@@ -113,7 +113,7 @@ public class Channel {
     msgQueue.activate(ctx);
     ctx.pipeline().addLast("messageCodec", messageCodec);
     ctx.pipeline().addLast("p2p", p2pHandler);
-    ctx.pipeline().addLast("data", MdcNetHandler);
+    ctx.pipeline().addLast("data", mdcNetHandler);
     setStartTime(msg.getTimestamp());
     setMdcState(MdcState.HANDSHAKE_FINISHED);
     getNodeStatistics().p2pHandShake.add();
