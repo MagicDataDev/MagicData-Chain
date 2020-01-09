@@ -1,6 +1,6 @@
 package org.mdc.core.exception;
 
-public class SignatureFormatException extends TronException {
+public class SignatureFormatException extends MdcException {
 
   public SignatureFormatException() {
     super();

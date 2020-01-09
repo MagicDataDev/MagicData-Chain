@@ -10,7 +10,7 @@ import java.util.Set;
 import java.util.StringTokenizer;
 
 @Component
-public class PeersStore extends TronDatabase<Set<Node>> {
+public class PeersStore extends MdcDatabase<Set<Node>> {
 
   @Autowired
   public PeersStore(ApplicationContext ctx) {

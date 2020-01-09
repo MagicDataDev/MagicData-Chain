@@ -2,7 +2,7 @@ package org.mdc.core.net.message;
 
 import org.mdc.protos.Protocol;
 
-public class ItemNotFound extends TronMessage {
+public class ItemNotFound extends MdcMessage {
 
   private org.mdc.protos.Protocol.Items notFound;
 

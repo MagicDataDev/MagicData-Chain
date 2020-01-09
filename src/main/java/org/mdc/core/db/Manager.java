@@ -39,10 +39,10 @@ import org.mdc.core.db.accountstate.TrieService;
 import org.mdc.core.db.accountstate.callback.AccountStateCallBack;
 import org.mdc.core.db.api.AssetUpdateHelper;
 import org.mdc.core.db2.core.ISession;
-import org.mdc.core.db2.core.ITronChainBase;
+import org.mdc.core.db2.core.IMdcChainBase;
 import org.mdc.core.db2.core.SnapshotManager;
 import org.mdc.core.exception.*;
-import org.mdc.core.net.TronNetService;
+import org.mdc.core.net.MdcNetService;
 import org.mdc.core.net.message.BlockMessage;
 import org.mdc.core.services.WitnessService;
 import org.mdc.core.witness.ProposalController;
@@ -124,7 +124,7 @@ public class Manager {
   private StorageRowStore storageRowStore;
 
   @Setter
-  private TronNetService tronNetService;
+  private MdcNetService MdcNetService;
 
   // for network
   @Autowired
@@ -1399,8 +1399,8 @@ public class Manager {
     blockCapsule.sign(privateKey);
     blockCapsule.setResult(transationRetCapsule);
 
-    if (tronNetService != null) {
-      tronNetService.fastForward(new BlockMessage(blockCapsule));
+    if (MdcNetService != null) {
+      MdcNetService.fastForward(new BlockMessage(blockCapsule));
     }
 
     try {
@@ -1748,7 +1748,7 @@ public class Manager {
     logger.info("******** end to close db ********");
   }
 
-  public void closeOneStore(ITronChainBase database) {
+  public void closeOneStore(IMdcChainBase database) {
     logger.info("******** begin to close " + database.getName() + " ********");
     try {
       database.close();

@@ -19,7 +19,7 @@
 package org.mdc.common.crypto;
 
 import lombok.extern.slf4j.Slf4j;
-import org.mdc.common.crypto.jce.TronCastleProvider;
+import org.mdc.common.crypto.jce.MdcCastleProvider;
 import org.mdc.core.Wallet;
 import org.mdc.core.capsule.utils.RLP;
 
@@ -42,7 +42,7 @@ public class Hash {
   public static final byte[] EMPTY_TRIE_HASH;
 
   static {
-    Security.addProvider(TronCastleProvider.getInstance());
+    Security.addProvider(MdcCastleProvider.getInstance());
     CRYPTO_PROVIDER = Security.getProvider("SC");
     HASH_256_ALGORITHM_NAME = "mdc-KECCAK-256";
     HASH_512_ALGORITHM_NAME = "mdc-KECCAK-512";

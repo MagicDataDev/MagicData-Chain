@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component
-public class VotesStore extends TronStoreWithRevoking<VotesCapsule> {
+public class VotesStore extends MdcStoreWithRevoking<VotesCapsule> {
 
   @Autowired
   public VotesStore(@Value("votes") String dbName) {

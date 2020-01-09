@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 
 @Slf4j(topic = "DB")
 @Component
-public class CodeStore extends TronStoreWithRevoking<CodeCapsule> {
+public class CodeStore extends MdcStoreWithRevoking<CodeCapsule> {
 
   @Autowired
   private CodeStore(@Value("code") String dbName) {

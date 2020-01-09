@@ -2,7 +2,7 @@ package org.mdc.core.net.peer;
 
 import lombok.extern.slf4j.Slf4j;
 import org.mdc.core.config.Parameter.NetConstants;
-import org.mdc.core.net.TronNetDelegate;
+import org.mdc.core.net.MdcNetDelegate;
 import org.mdc.protos.Protocol.ReasonCode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -16,7 +16,7 @@ import java.util.concurrent.TimeUnit;
 public class PeerStatusCheck {
 
   @Autowired
-  private TronNetDelegate tronNetDelegate;
+  private MdcNetDelegate MdcNetDelegate;
 
   private ScheduledExecutorService peerStatusCheckExecutor = Executors
       .newSingleThreadScheduledExecutor();
@@ -41,7 +41,7 @@ public class PeerStatusCheck {
 
     long now = System.currentTimeMillis();
 
-    tronNetDelegate.getActivePeer().forEach(peer -> {
+    MdcNetDelegate.getActivePeer().forEach(peer -> {
 
       boolean isDisconnected = false;
 

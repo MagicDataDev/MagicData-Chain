@@ -35,7 +35,7 @@ public class PeerServer {
 
     EventLoopGroup bossGroup = new NioEventLoopGroup(1);
     EventLoopGroup workerGroup = new NioEventLoopGroup(args.getTcpNettyWorkThreadNum());
-    TronChannelInitializer tronChannelInitializer = ctx.getBean(TronChannelInitializer.class, "");
+    MdcChannelInitializer MdcChannelInitializer = ctx.getBean(MdcChannelInitializer.class, "");
 
     try {
       ServerBootstrap b = new ServerBootstrap();
@@ -48,7 +48,7 @@ public class PeerServer {
       b.option(ChannelOption.CONNECT_TIMEOUT_MILLIS, this.args.getNodeConnectionTimeout());
 
       b.handler(new LoggingHandler());
-      b.childHandler(tronChannelInitializer);
+      b.childHandler(MdcChannelInitializer);
 
       // Start the client.
       logger.info("TCP listener started, bind port {}", port);

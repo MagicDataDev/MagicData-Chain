@@ -1,6 +1,6 @@
 package org.mdc.core.exception;
 
-public class CancelException extends TronException {
+public class CancelException extends MdcException {
 
   public CancelException() {
     super();

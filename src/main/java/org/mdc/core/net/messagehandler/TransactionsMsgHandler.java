@@ -5,10 +5,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.mdc.core.config.args.Args;
 import org.mdc.core.exception.P2pException;
 import org.mdc.core.exception.P2pException.TypeEnum;
-import org.mdc.core.net.TronNetDelegate;
+import org.mdc.core.net.MdcNetDelegate;
 import org.mdc.core.net.message.TransactionMessage;
 import org.mdc.core.net.message.TransactionsMessage;
-import org.mdc.core.net.message.TronMessage;
+import org.mdc.core.net.message.MdcMessage;
 import org.mdc.core.net.peer.Item;
 import org.mdc.core.net.peer.PeerConnection;
 import org.mdc.core.net.service.AdvService;
@@ -23,10 +23,10 @@ import java.util.concurrent.*;
 
 @Slf4j(topic = "net")
 @Component
-public class TransactionsMsgHandler implements TronMsgHandler {
+public class TransactionsMsgHandler implements MdcMsgHandler {
 
   @Autowired
-  private TronNetDelegate tronNetDelegate;
+  private MdcNetDelegate MdcNetDelegate;
 
   @Autowired
   private AdvService advService;
@@ -77,7 +77,7 @@ public class TransactionsMsgHandler implements TronMsgHandler {
   }
 
   @Override
-  public void processMessage(PeerConnection peer, TronMessage msg) throws P2pException {
+  public void processMessage(PeerConnection peer, MdcMessage msg) throws P2pException {
     TransactionsMessage transactionsMessage = (TransactionsMessage) msg;
     check(peer, transactionsMessage);
     for (Transaction trx : transactionsMessage.getTransactions().getTransactionsList()) {
@@ -130,7 +130,7 @@ public class TransactionsMsgHandler implements TronMsgHandler {
     }
 
     try {
-      tronNetDelegate.pushTransaction(trx.getTransactionCapsule());
+      MdcNetDelegate.pushTransaction(trx.getTransactionCapsule());
       advService.broadcast(trx);
     } catch (P2pException e) {
       logger.warn("Trx {} from peer {} process failed. type: {}, reason: {}",

@@ -7,7 +7,7 @@ import io.netty.channel.socket.nio.NioSocketChannel;
 import lombok.extern.slf4j.Slf4j;
 import org.mdc.common.overlay.discover.node.Node;
 import org.mdc.common.overlay.discover.node.NodeHandler;
-import org.mdc.common.overlay.server.TronChannelInitializer;
+import org.mdc.common.overlay.server.MdcChannelInitializer;
 import org.mdc.core.config.args.Args;
 import org.mdc.protos.Protocol.ReasonCode;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +32,7 @@ public class PeerClient {
 
       @Override
       public Thread newThread(Runnable r) {
-        return new Thread(r, "TronJClientWorker-" + cnt.getAndIncrement());
+        return new Thread(r, "MdcJClientWorker-" + cnt.getAndIncrement());
       }
     });
   }
@@ -66,9 +66,9 @@ public class PeerClient {
 
     logger.info("connect peer {} {} {}", host, port, remoteId);
 
-    TronChannelInitializer tronChannelInitializer = ctx
-        .getBean(TronChannelInitializer.class, remoteId);
-    tronChannelInitializer.setPeerDiscoveryMode(discoveryMode);
+    MdcChannelInitializer MdcChannelInitializer = ctx
+        .getBean(MdcChannelInitializer.class, remoteId);
+    MdcChannelInitializer.setPeerDiscoveryMode(discoveryMode);
 
     Bootstrap b = new Bootstrap();
     b.group(workerGroup);
@@ -79,7 +79,7 @@ public class PeerClient {
     b.option(ChannelOption.CONNECT_TIMEOUT_MILLIS, Args.getInstance().getNodeConnectionTimeout());
     b.remoteAddress(host, port);
 
-    b.handler(tronChannelInitializer);
+    b.handler(MdcChannelInitializer);
 
     // Start the client.
     return b.connect();

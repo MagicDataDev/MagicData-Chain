@@ -1,6 +1,6 @@
 package org.mdc.core.exception;
 
-public class VMIllegalException extends TronException {
+public class VMIllegalException extends MdcException {
 
   public VMIllegalException() {
     super();

@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 @Slf4j(topic = "net")
 @Component
 @Scope("prototype")
-public class TronChannelInitializer extends ChannelInitializer<NioSocketChannel> {
+public class MdcChannelInitializer extends ChannelInitializer<NioSocketChannel> {
 
   @Autowired
   private ApplicationContext ctx;
@@ -27,7 +27,7 @@ public class TronChannelInitializer extends ChannelInitializer<NioSocketChannel>
 
   private boolean peerDiscoveryMode = false;
 
-  public TronChannelInitializer(String remoteId) {
+  public MdcChannelInitializer(String remoteId) {
     this.remoteId = remoteId;
   }
 

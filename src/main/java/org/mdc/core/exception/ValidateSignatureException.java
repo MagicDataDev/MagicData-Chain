@@ -1,6 +1,6 @@
 package org.mdc.core.exception;
 
-public class ValidateSignatureException extends TronException {
+public class ValidateSignatureException extends MdcException {
 
   public ValidateSignatureException() {
     super();

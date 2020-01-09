@@ -4,7 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ArrayUtils;
 import org.mdc.core.capsule.BytesCapsule;
 import org.mdc.core.capsule.utils.RLP;
-import org.mdc.core.db.TronStoreWithRevoking;
+import org.mdc.core.db.MdcStoreWithRevoking;
 import org.mdc.core.db.accountstate.AccountStateEntity;
 import org.mdc.core.db.accountstate.TrieService;
 import org.mdc.core.db2.common.DB;
@@ -17,7 +17,7 @@ import javax.annotation.PostConstruct;
 
 @Slf4j(topic = "AccountState")
 @Component
-public class AccountStateStoreTrie extends TronStoreWithRevoking<BytesCapsule> implements
+public class AccountStateStoreTrie extends MdcStoreWithRevoking<BytesCapsule> implements
     DB<byte[], BytesCapsule> {
 
   @Autowired

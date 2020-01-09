@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class BlockInventoryMessage extends TronMessage {
+public class BlockInventoryMessage extends MdcMessage {
 
   protected BlockInventory blockInventory;
 

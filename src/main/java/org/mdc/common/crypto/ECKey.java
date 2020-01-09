@@ -156,7 +156,7 @@ public class ECKey implements Serializable {
    * @param secureRandom -
    */
   public ECKey(SecureRandom secureRandom) {
-    this(TronCastleProvider.getInstance(), secureRandom);
+    this(MdcCastleProvider.getInstance(), secureRandom);
   }
 
   /**
@@ -192,7 +192,7 @@ public class ECKey implements Serializable {
    */
   public ECKey(@Nullable BigInteger priv, ECPoint pub) {
     this(
-        TronCastleProvider.getInstance(),
+        MdcCastleProvider.getInstance(),
         privateKeyFromBigInteger(priv),
         pub
     );
@@ -227,7 +227,7 @@ public class ECKey implements Serializable {
     } else {
       try {
         return ECKeyFactory
-            .getInstance(TronCastleProvider.getInstance())
+            .getInstance(MdcCastleProvider.getInstance())
             .generatePrivate(new ECPrivateKeySpec(priv,
                 CURVE_SPEC));
       } catch (InvalidKeySpecException ex) {

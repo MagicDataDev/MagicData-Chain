@@ -1,6 +1,6 @@
 package org.mdc.core.exception;
 
-public class NonCommonBlockException extends TronException {
+public class NonCommonBlockException extends MdcException {
 
   public NonCommonBlockException() {
     super();

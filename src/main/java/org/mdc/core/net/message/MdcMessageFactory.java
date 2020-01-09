@@ -7,10 +7,10 @@ import org.mdc.core.exception.P2pException;
 /**
  * msg factory.
  */
-public class TronMessageFactory extends MessageFactory {
+public class MdcMessageFactory extends MessageFactory {
 
   @Override
-  public TronMessage create(byte[] data) throws Exception {
+  public MdcMessage create(byte[] data) throws Exception {
     try {
       byte type = data[0];
       byte[] rawData = ArrayUtils.subarray(data, 1, data.length);
@@ -23,7 +23,7 @@ public class TronMessageFactory extends MessageFactory {
     }
   }
 
-  private TronMessage create(byte type, byte[] packed) throws Exception {
+  private MdcMessage create(byte type, byte[] packed) throws Exception {
     MessageTypes receivedTypes = MessageTypes.fromByte(type);
     if (receivedTypes == null) {
       throw new P2pException(P2pException.TypeEnum.NO_SUCH_MESSAGE,

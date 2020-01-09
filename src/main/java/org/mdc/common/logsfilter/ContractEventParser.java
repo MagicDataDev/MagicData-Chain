@@ -42,7 +42,7 @@ public class ContractEventParser {
         return Hex.toHexString(startBytes);
       } else if (type == Type.ADDRESS) {
         byte[] last20Bytes = Arrays.copyOfRange(startBytes, 12, startBytes.length);
-        return Wallet.encode58Check(MUtil.convertToTronAddress(last20Bytes));
+        return Wallet.encode58Check(MUtil.convertToMdcAddress(last20Bytes));
       } else if (type == Type.STRING || type == Type.BYTES) {
         int start = intValueExact(startBytes);
         byte[] lengthBytes = subBytes(data, start, DATAWORD_UNIT_SIZE);
@@ -112,7 +112,7 @@ public class ContractEventParser {
       return String.valueOf(!DataWord.isZero(bytes));
     } else if (type == Type.ADDRESS) {
       byte[] last20Bytes = Arrays.copyOfRange(bytes, 12, bytes.length);
-      return Wallet.encode58Check(MUtil.convertToTronAddress(last20Bytes));
+      return Wallet.encode58Check(MUtil.convertToMdcAddress(last20Bytes));
     }
     return Hex.toHexString(bytes);
   }

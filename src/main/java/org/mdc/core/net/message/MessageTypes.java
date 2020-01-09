@@ -81,7 +81,7 @@ public enum MessageTypes {
     return code <= P2P_PONG.asByte() && code >= P2P_HELLO.asByte();
   }
 
-  public static boolean inTronRange(byte code) {
+  public static boolean inMdcRange(byte code) {
     return code <= TRX_INVENTORY.asByte() && code >= FIRST.asByte();
   }
 

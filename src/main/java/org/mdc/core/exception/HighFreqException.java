@@ -1,6 +1,6 @@
 package org.mdc.core.exception;
 
-public class HighFreqException extends TronException {
+public class HighFreqException extends MdcException {
 
   public HighFreqException() {
     super();

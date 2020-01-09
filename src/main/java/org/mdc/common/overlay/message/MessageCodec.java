@@ -6,7 +6,7 @@ import io.netty.handler.codec.ByteToMessageDecoder;
 import org.mdc.common.overlay.server.Channel;
 import org.mdc.core.exception.P2pException;
 import org.mdc.core.net.message.MessageTypes;
-import org.mdc.core.net.message.TronMessageFactory;
+import org.mdc.core.net.message.MdcMessageFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -18,7 +18,7 @@ public class MessageCodec extends ByteToMessageDecoder {
 
   private Channel channel;
   private P2pMessageFactory p2pMessageFactory = new P2pMessageFactory();
-  private TronMessageFactory tronMessageFactory = new TronMessageFactory();
+  private MdcMessageFactory MdcMessageFactory = new MdcMessageFactory();
 
   @Override
   protected void decode(ChannelHandlerContext ctx, ByteBuf buffer, List<Object> out)
@@ -44,8 +44,8 @@ public class MessageCodec extends ByteToMessageDecoder {
     if (MessageTypes.inP2pRange(type)) {
       return p2pMessageFactory.create(encoded);
     }
-    if (MessageTypes.inTronRange(type)) {
-      return tronMessageFactory.create(encoded);
+    if (MessageTypes.inMdcRange(type)) {
+      return MdcMessageFactory.create(encoded);
     }
     throw new P2pException(P2pException.TypeEnum.NO_SUCH_MESSAGE, "type=" + encoded[0]);
   }

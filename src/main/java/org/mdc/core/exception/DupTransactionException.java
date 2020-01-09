@@ -1,6 +1,6 @@
 package org.mdc.core.exception;
 
-public class DupTransactionException extends TronException {
+public class DupTransactionException extends MdcException {
 
   public DupTransactionException() {
     super();

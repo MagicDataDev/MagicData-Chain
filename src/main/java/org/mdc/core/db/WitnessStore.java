@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 
 @Slf4j(topic = "DB")
 @Component
-public class WitnessStore extends TronStoreWithRevoking<WitnessCapsule> {
+public class WitnessStore extends MdcStoreWithRevoking<WitnessCapsule> {
 
   @Autowired
   protected WitnessStore(@Value("witness") String dbName) {

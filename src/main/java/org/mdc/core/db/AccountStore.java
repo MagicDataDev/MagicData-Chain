@@ -17,7 +17,7 @@ import java.util.Map;
 
 @Slf4j(topic = "DB")
 @Component
-public class AccountStore extends TronStoreWithRevoking<AccountCapsule> {
+public class AccountStore extends MdcStoreWithRevoking<AccountCapsule> {
 
   private static Map<String, byte[]> assertsAddress = new HashMap<>(); // key = name , value = address
 

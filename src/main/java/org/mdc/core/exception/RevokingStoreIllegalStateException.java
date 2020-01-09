@@ -1,6 +1,6 @@
 package org.mdc.core.exception;
 
-public class RevokingStoreIllegalStateException extends TronRuntimeException {
+public class RevokingStoreIllegalStateException extends MdcRuntimeException {
 
   /**
    * Constructs an RevokingStoreIllegalStateException with no detail message. A detail message is a

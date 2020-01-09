@@ -11,7 +11,7 @@ import java.util.Spliterator;
 import java.util.function.Consumer;
 
 @Component
-public class CheckTmpStore extends TronDatabase<byte[]> {
+public class CheckTmpStore extends MdcDatabase<byte[]> {
 
   @Autowired
   public CheckTmpStore(ApplicationContext ctx) {

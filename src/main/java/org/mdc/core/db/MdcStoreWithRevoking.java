@@ -13,7 +13,7 @@ import org.mdc.core.db2.common.DB;
 import org.mdc.core.db2.common.IRevokingDB;
 import org.mdc.core.db2.common.LevelDB;
 import org.mdc.core.db2.common.RocksDB;
-import org.mdc.core.db2.core.ITronChainBase;
+import org.mdc.core.db2.core.IMdcChainBase;
 import org.mdc.core.db2.core.RevokingDBWithCachingNewValue;
 import org.mdc.core.db2.core.RevokingDBWithCachingOldValue;
 import org.mdc.core.exception.BadItemException;
@@ -28,7 +28,7 @@ import java.util.Map;
 import java.util.Objects;
 
 @Slf4j(topic = "DB")
-public abstract class TronStoreWithRevoking<T extends ProtoCapsule> implements ITronChainBase<T> {
+public abstract class MdcStoreWithRevoking<T extends ProtoCapsule> implements IMdcChainBase<T> {
 
   @Getter // only for unit test
   protected IRevokingDB revokingDB;
@@ -42,7 +42,7 @@ public abstract class TronStoreWithRevoking<T extends ProtoCapsule> implements I
   @Getter
   private String dbName;
 
-  protected TronStoreWithRevoking(String dbName) {
+  protected MdcStoreWithRevoking(String dbName) {
     this.dbName = dbName;
     int dbVersion = Args.getInstance().getStorage().getDbVersion();
     String dbEngine = Args.getInstance().getStorage().getDbEngine();
@@ -59,7 +59,7 @@ public abstract class TronStoreWithRevoking<T extends ProtoCapsule> implements I
     }
   }
 
-  protected TronStoreWithRevoking(String dbName, Class<? extends DB> clz) {
+  protected MdcStoreWithRevoking(String dbName, Class<? extends DB> clz) {
     this.dbName = dbName;
     int dbVersion = Args.getInstance().getStorage().getDbVersion();
     if (dbVersion == 2) {
@@ -75,7 +75,7 @@ public abstract class TronStoreWithRevoking<T extends ProtoCapsule> implements I
   }
 
   // only for test
-  protected TronStoreWithRevoking(String dbName, RevokingDatabase revokingDatabase) {
+  protected MdcStoreWithRevoking(String dbName, RevokingDatabase revokingDatabase) {
     this.revokingDB = new RevokingDBWithCachingOldValue(dbName,
         (AbstractRevokingStore) revokingDatabase);
   }

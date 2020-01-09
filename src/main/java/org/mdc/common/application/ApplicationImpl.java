@@ -5,7 +5,7 @@ import org.mdc.common.logsfilter.EventPluginLoader;
 import org.mdc.core.config.args.Args;
 import org.mdc.core.db.BlockStore;
 import org.mdc.core.db.Manager;
-import org.mdc.core.net.TronNetService;
+import org.mdc.core.net.MdcNetService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -17,7 +17,7 @@ public class ApplicationImpl implements Application {
   private ServiceContainer services;
 
   @Autowired
-  private TronNetService tronNetService;
+  private MdcNetService MdcNetService;
 
   @Autowired
   private Manager dbManager;
@@ -50,13 +50,13 @@ public class ApplicationImpl implements Application {
    * start up the app.
    */
   public void startup() {
-    tronNetService.start();
+    MdcNetService.start();
   }
 
   @Override
   public void shutdown() {
     logger.info("******** begin to shutdown ********");
-    tronNetService.close();
+    MdcNetService.close();
     synchronized (dbManager.getRevokingStore()) {
       closeRevokingStore();
       closeAllStore();

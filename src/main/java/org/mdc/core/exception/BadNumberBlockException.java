@@ -1,6 +1,6 @@
 package org.mdc.core.exception;
 
-public class BadNumberBlockException extends TronException {
+public class BadNumberBlockException extends MdcException {
 
   public BadNumberBlockException() {
     super();

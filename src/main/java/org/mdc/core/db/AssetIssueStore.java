@@ -15,7 +15,7 @@ import static org.mdc.core.config.Parameter.DatabaseConstants.ASSET_ISSUE_COUNT_
 
 @Slf4j(topic = "DB")
 @Component
-public class AssetIssueStore extends TronStoreWithRevoking<AssetIssueCapsule> {
+public class AssetIssueStore extends MdcStoreWithRevoking<AssetIssueCapsule> {
 
   @Autowired
   protected AssetIssueStore(@Value("asset-issue") String dbName) {

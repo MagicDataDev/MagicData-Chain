@@ -48,7 +48,7 @@ public class MUtil {
     deposit.addTokenBalance(fromAddress, tokenId.getBytes(), -amount);
   }
 
-  public static byte[] convertToTronAddress(byte[] address) {
+  public static byte[] convertToMdcAddress(byte[] address) {
     if (address.length == 20) {
       byte[] newAddress = new byte[21];
       byte[] temp = new byte[]{Wallet.getAddressPreFixByte()};

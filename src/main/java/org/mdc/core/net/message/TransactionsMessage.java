@@ -6,7 +6,7 @@ import org.mdc.protos.Protocol.Transaction;
 
 import java.util.List;
 
-public class TransactionsMessage extends TronMessage {
+public class TransactionsMessage extends MdcMessage {
 
   private Protocol.Transactions transactions;
 

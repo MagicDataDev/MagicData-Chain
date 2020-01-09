@@ -1,6 +1,6 @@
 package org.mdc.core.exception;
 
-public class TransactionExpirationException extends TronException {
+public class TransactionExpirationException extends MdcException {
 
   public TransactionExpirationException() {
     super();

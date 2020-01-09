@@ -2,9 +2,9 @@ package org.mdc.core.net.messagehandler;
 
 import lombok.extern.slf4j.Slf4j;
 import org.mdc.common.utils.Sha256Hash;
-import org.mdc.core.net.TronNetDelegate;
+import org.mdc.core.net.MdcNetDelegate;
 import org.mdc.core.net.message.InventoryMessage;
-import org.mdc.core.net.message.TronMessage;
+import org.mdc.core.net.message.MdcMessage;
 import org.mdc.core.net.peer.Item;
 import org.mdc.core.net.peer.PeerConnection;
 import org.mdc.core.net.service.AdvService;
@@ -14,10 +14,10 @@ import org.springframework.stereotype.Component;
 
 @Slf4j(topic = "net")
 @Component
-public class InventoryMsgHandler implements TronMsgHandler {
+public class InventoryMsgHandler implements MdcMsgHandler {
 
   @Autowired
-  private TronNetDelegate tronNetDelegate;
+  private MdcNetDelegate MdcNetDelegate;
 
   @Autowired
   private AdvService advService;
@@ -28,7 +28,7 @@ public class InventoryMsgHandler implements TronMsgHandler {
   private int maxCountIn10s = 10_000;
 
   @Override
-  public void processMessage(PeerConnection peer, TronMessage msg) {
+  public void processMessage(PeerConnection peer, MdcMessage msg) {
     InventoryMessage inventoryMessage = (InventoryMessage) msg;
     InventoryType type = inventoryMessage.getInventoryType();
 
@@ -54,7 +54,7 @@ public class InventoryMsgHandler implements TronMsgHandler {
     }
 
     if (type.equals(InventoryType.TRX)) {
-      int count = peer.getNodeStatistics().messageStatistics.tronInTrxInventoryElement.getCount(10);
+      int count = peer.getNodeStatistics().messageStatistics.mdcInTrxInventoryElement.getCount(10);
       if (count > maxCountIn10s) {
         logger.warn("Drop inv: {} size: {} from Peer {}, Inv count: {} is overload.",
             type, size, peer.getInetAddress(), count);

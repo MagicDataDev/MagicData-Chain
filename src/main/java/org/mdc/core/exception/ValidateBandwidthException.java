@@ -1,6 +1,6 @@
 package org.mdc.core.exception;
 
-public class ValidateBandwidthException extends TronException {
+public class ValidateBandwidthException extends MdcException {
 
   public ValidateBandwidthException() {
     super();

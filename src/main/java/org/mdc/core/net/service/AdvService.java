@@ -10,7 +10,7 @@ import org.mdc.common.utils.Sha256Hash;
 import org.mdc.common.utils.Time;
 import org.mdc.core.capsule.BlockCapsule.BlockId;
 import org.mdc.core.config.args.Args;
-import org.mdc.core.net.TronNetDelegate;
+import org.mdc.core.net.MdcNetDelegate;
 import org.mdc.core.net.message.BlockMessage;
 import org.mdc.core.net.message.FetchInvDataMessage;
 import org.mdc.core.net.message.InventoryMessage;
@@ -38,7 +38,7 @@ import static org.mdc.core.config.Parameter.NetConstants.MSG_CACHE_DURATION_IN_B
 public class AdvService {
 
   @Autowired
-  private TronNetDelegate tronNetDelegate;
+  private MdcNetDelegate MdcNetDelegate;
 
   private ConcurrentHashMap<Item, Long> invToFetch = new ConcurrentHashMap<>();
 
@@ -177,7 +177,7 @@ public class AdvService {
 
   public void fastForward(BlockMessage msg) {
     Item item = new Item(msg.getBlockId(), InventoryType.BLOCK);
-    List<PeerConnection> peers = tronNetDelegate.getActivePeer().stream()
+    List<PeerConnection> peers = MdcNetDelegate.getActivePeer().stream()
         .filter(peer -> !peer.isNeedSyncFromPeer() && !peer.isNeedSyncFromUs())
         .filter(peer -> peer.getAdvInvReceive().getIfPresent(item) == null
             && peer.getAdvInvSpread().getIfPresent(item) == null)
@@ -198,7 +198,7 @@ public class AdvService {
   public void onDisconnect(PeerConnection peer) {
     if (!peer.getAdvInvRequest().isEmpty()) {
       peer.getAdvInvRequest().keySet().forEach(item -> {
-        if (tronNetDelegate.getActivePeer().stream()
+        if (MdcNetDelegate.getActivePeer().stream()
             .anyMatch(p -> !p.equals(peer) && p.getAdvInvReceive().getIfPresent(item) != null)) {
           invToFetch.put(item, System.currentTimeMillis());
         } else {
@@ -213,7 +213,7 @@ public class AdvService {
   }
 
   synchronized private void consumerInvToFetch() {
-    Collection<PeerConnection> peers = tronNetDelegate.getActivePeer().stream()
+    Collection<PeerConnection> peers = MdcNetDelegate.getActivePeer().stream()
         .filter(peer -> peer.isIdle())
         .collect(Collectors.toList());
 
@@ -247,7 +247,7 @@ public class AdvService {
 
   synchronized private void consumerInvToSpread() {
 
-    List<PeerConnection> peers = tronNetDelegate.getActivePeer().stream()
+    List<PeerConnection> peers = MdcNetDelegate.getActivePeer().stream()
         .filter(peer -> !peer.isNeedSyncFromPeer() && !peer.isNeedSyncFromUs())
         .collect(Collectors.toList());
 

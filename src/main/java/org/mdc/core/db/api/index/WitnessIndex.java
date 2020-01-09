@@ -8,7 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.mdc.common.utils.ByteArray;
 import org.mdc.core.capsule.WitnessCapsule;
 import org.mdc.core.db.common.WrappedByteArray;
-import org.mdc.core.db2.core.ITronChainBase;
+import org.mdc.core.db2.core.IMdcChainBase;
 import org.mdc.protos.Protocol.Witness;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -28,7 +28,7 @@ public class WitnessIndex extends AbstractIndex<WitnessCapsule, Witness> {
 
   @Autowired
   public WitnessIndex(
-      @Qualifier("witnessStore") final ITronChainBase<WitnessCapsule> database) {
+      @Qualifier("witnessStore") final IMdcChainBase<WitnessCapsule> database) {
     super(database);
   }
 

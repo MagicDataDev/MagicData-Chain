@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class DelegatedResourceAccountIndexStore extends
-        TronStoreWithRevoking<DelegatedResourceAccountIndexCapsule> {
+        MdcStoreWithRevoking<DelegatedResourceAccountIndexCapsule> {
 
   @Autowired
   public DelegatedResourceAccountIndexStore(@Value("DelegatedResourceAccountIndex") String dbName) {

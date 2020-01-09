@@ -8,7 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.mdc.common.utils.ByteArray;
 import org.mdc.core.capsule.TransactionCapsule;
 import org.mdc.core.db.common.WrappedByteArray;
-import org.mdc.core.db2.core.ITronChainBase;
+import org.mdc.core.db2.core.IMdcChainBase;
 import org.mdc.protos.Protocol.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -31,7 +31,7 @@ public class TransactionIndex extends AbstractIndex<TransactionCapsule, Transact
 
   @Autowired
   public TransactionIndex(
-      @Qualifier("transactionStore") final ITronChainBase<TransactionCapsule> database) {
+      @Qualifier("transactionStore") final IMdcChainBase<TransactionCapsule> database) {
     super(database);
   }
 

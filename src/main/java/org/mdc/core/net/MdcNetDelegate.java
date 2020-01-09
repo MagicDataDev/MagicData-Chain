@@ -29,7 +29,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 @Slf4j(topic = "net")
 @Component
-public class TronNetDelegate {
+public class MdcNetDelegate {
 
   @Autowired
   private SyncPool syncPool;

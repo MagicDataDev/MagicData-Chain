@@ -1,6 +1,6 @@
 package org.mdc.core.exception;
 
-public class BalanceInsufficientException extends TronException {
+public class BalanceInsufficientException extends MdcException {
 
   public BalanceInsufficientException() {
     super();

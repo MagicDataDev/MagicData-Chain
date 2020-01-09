@@ -48,7 +48,7 @@ public class LogInfoTriggerParser {
 
     for (LogInfo logInfo : logInfos) {
 
-      byte[] contractAddress = MUtil.convertToTronAddress(logInfo.getAddress());
+      byte[] contractAddress = MUtil.convertToMdcAddress(logInfo.getAddress());
       String strContractAddr =
           ArrayUtils.isEmpty(contractAddress) ? "" : Wallet.encode58Check(contractAddress);
       if (addrMap.get(strContractAddr) != null) {
@@ -63,7 +63,7 @@ public class LogInfoTriggerParser {
       }
       ABI abi = contract.getInstance().getAbi();
       String creatorAddr = Wallet.encode58Check(
-          MUtil.convertToTronAddress(contract.getInstance().getOriginAddress().toByteArray()));
+          MUtil.convertToMdcAddress(contract.getInstance().getOriginAddress().toByteArray()));
       addrMap.put(strContractAddr, creatorAddr);
       abiMap.put(strContractAddr, abi);
     }
@@ -71,7 +71,7 @@ public class LogInfoTriggerParser {
     int index = 1;
     for (LogInfo logInfo : logInfos) {
 
-      byte[] contractAddress = MUtil.convertToTronAddress(logInfo.getAddress());
+      byte[] contractAddress = MUtil.convertToMdcAddress(logInfo.getAddress());
       String strContractAddr =
           ArrayUtils.isEmpty(contractAddress) ? "" : Wallet.encode58Check(contractAddress);
       ABI abi = abiMap.get(strContractAddr);

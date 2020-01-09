@@ -1,6 +1,6 @@
 package org.mdc.core.exception;
 
-public class BadTransactionException extends TronException {
+public class BadTransactionException extends MdcException {
 
   public BadTransactionException() {
     super();

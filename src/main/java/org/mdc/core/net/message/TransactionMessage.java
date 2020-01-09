@@ -5,7 +5,7 @@ import org.mdc.common.utils.Sha256Hash;
 import org.mdc.core.capsule.TransactionCapsule;
 import org.mdc.protos.Protocol.Transaction;
 
-public class TransactionMessage extends TronMessage {
+public class TransactionMessage extends MdcMessage {
 
   private TransactionCapsule transactionCapsule;
 

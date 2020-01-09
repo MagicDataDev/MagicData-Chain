@@ -21,7 +21,7 @@ import org.spongycastle.util.encoders.Hex;
 
 import java.util.HashMap;
 
-import static org.mdc.common.runtime.utils.MUtil.convertToTronAddress;
+import static org.mdc.common.runtime.utils.MUtil.convertToMdcAddress;
 
 @Slf4j(topic = "deposit")
 public class DepositImpl implements Deposit {
@@ -353,7 +353,7 @@ public class DepositImpl implements Deposit {
 
   @Override
   public synchronized void putStorageValue(byte[] address, DataWord key, DataWord value) {
-    address = convertToTronAddress(address);
+    address = convertToMdcAddress(address);
     if (getAccount(address) == null) {
       return;
     }
@@ -370,7 +370,7 @@ public class DepositImpl implements Deposit {
 
   @Override
   public synchronized DataWord getStorageValue(byte[] address, DataWord key) {
-    address = convertToTronAddress(address);
+    address = convertToMdcAddress(address);
     if (getAccount(address) == null) {
       return null;
     }

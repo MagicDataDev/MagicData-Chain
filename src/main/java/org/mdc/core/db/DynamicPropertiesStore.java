@@ -19,7 +19,7 @@ import java.util.stream.IntStream;
 
 @Slf4j(topic = "DB")
 @Component
-public class DynamicPropertiesStore extends TronStoreWithRevoking<BytesCapsule> {
+public class DynamicPropertiesStore extends MdcStoreWithRevoking<BytesCapsule> {
 
   private static final byte[] LATEST_BLOCK_HEADER_TIMESTAMP = "latest_block_header_timestamp"
       .getBytes();

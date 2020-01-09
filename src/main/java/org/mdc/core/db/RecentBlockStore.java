@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component
-public class RecentBlockStore extends TronStoreWithRevoking<BytesCapsule> {
+public class RecentBlockStore extends MdcStoreWithRevoking<BytesCapsule> {
 
   @Autowired
   private RecentBlockStore(@Value("recent-block") String dbName) {

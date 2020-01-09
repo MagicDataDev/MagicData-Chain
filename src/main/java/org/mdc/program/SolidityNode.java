@@ -4,7 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.BooleanUtils;
 import org.mdc.common.application.Application;
 import org.mdc.common.application.ApplicationFactory;
-import org.mdc.common.application.TronApplicationContext;
+import org.mdc.common.application.MdcApplicationContext;
 import org.mdc.common.overlay.client.DatabaseGrpcClient;
 import org.mdc.common.overlay.discover.DiscoverServer;
 import org.mdc.common.overlay.discover.node.NodeManager;
@@ -184,7 +184,7 @@ public class SolidityNode {
     }
     cfgArgs.setSolidityNode(true);
 
-    ApplicationContext context = new TronApplicationContext(DefaultConfig.class);
+    ApplicationContext context = new MdcApplicationContext(DefaultConfig.class);
 
     if (cfgArgs.isHelp()) {
       logger.info("Here is the help message.");

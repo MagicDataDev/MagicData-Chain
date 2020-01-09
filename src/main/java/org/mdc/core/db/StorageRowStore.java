@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 
 @Slf4j(topic = "DB")
 @Component
-public class StorageRowStore extends TronStoreWithRevoking<StorageRowCapsule> {
+public class StorageRowStore extends MdcStoreWithRevoking<StorageRowCapsule> {
 
   @Autowired
   private StorageRowStore(@Value("storage-row") String dbName) {

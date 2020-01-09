@@ -13,7 +13,7 @@ import org.mdc.common.utils.Sha256Hash;
 import org.mdc.core.capsule.BlockCapsule;
 import org.mdc.core.capsule.BlockCapsule.BlockId;
 import org.mdc.core.config.Parameter.NodeConstant;
-import org.mdc.core.net.TronNetDelegate;
+import org.mdc.core.net.MdcNetDelegate;
 import org.mdc.core.net.service.AdvService;
 import org.mdc.core.net.service.SyncService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +34,7 @@ import java.util.concurrent.TimeUnit;
 public class PeerConnection extends Channel {
 
   @Autowired
-  private TronNetDelegate tronNetDelegate;
+  private MdcNetDelegate MdcNetDelegate;
 
   @Autowired
   private SyncService syncService;
@@ -121,11 +121,11 @@ public class PeerConnection extends Channel {
   }
 
   public void onConnect() {
-    if (getHelloMessage().getHeadBlockId().getNum() > tronNetDelegate.getHeadBlockId().getNum()) {
-      setTronState(TronState.SYNCING);
+    if (getHelloMessage().getHeadBlockId().getNum() > MdcNetDelegate.getHeadBlockId().getNum()) {
+      setMdcState(MdcState.SYNCING);
       syncService.startSync(this);
     } else {
-      setTronState(TronState.SYNC_COMPLETED);
+      setMdcState(MdcState.SYNC_COMPLETED);
     }
   }
 

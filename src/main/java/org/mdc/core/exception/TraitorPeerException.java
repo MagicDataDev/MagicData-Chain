@@ -1,6 +1,6 @@
 package org.mdc.core.exception;
 
-public class TraitorPeerException extends TronException {
+public class TraitorPeerException extends MdcException {
 
   public TraitorPeerException() {
     super();

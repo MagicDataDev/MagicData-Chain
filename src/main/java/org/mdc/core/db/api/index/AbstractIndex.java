@@ -11,7 +11,7 @@ import org.mdc.core.config.args.Args;
 import org.mdc.core.db.api.index.Index.Iface;
 import org.mdc.core.db.common.WrappedByteArray;
 import org.mdc.core.db.common.WrappedResultSet;
-import org.mdc.core.db2.core.ITronChainBase;
+import org.mdc.core.db2.core.IMdcChainBase;
 
 import java.io.File;
 import java.nio.file.Paths;
@@ -20,7 +20,7 @@ import java.util.Objects;
 
 public abstract class AbstractIndex<E extends ProtoCapsule<T>, T> implements Iface<T> {
 
-  protected ITronChainBase<E> database;
+  protected IMdcChainBase<E> database;
   protected ConcurrentIndexedCollection<WrappedByteArray> index;
   private File parent = new File(Args.getInstance().getOutputDirectory() + "index");
   protected File indexPath;
@@ -33,7 +33,7 @@ public abstract class AbstractIndex<E extends ProtoCapsule<T>, T> implements Ifa
     setAttribute();
   }
 
-  public AbstractIndex(ITronChainBase<E> database) {
+  public AbstractIndex(IMdcChainBase<E> database) {
     this.database = database;
     String dbName = database.getDbName();
     File parentDir = Paths.get(

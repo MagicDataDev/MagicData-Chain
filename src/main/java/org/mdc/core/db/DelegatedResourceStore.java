@@ -11,7 +11,7 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Component
-public class DelegatedResourceStore extends TronStoreWithRevoking<DelegatedResourceCapsule> {
+public class DelegatedResourceStore extends MdcStoreWithRevoking<DelegatedResourceCapsule> {
 
   @Autowired
   public DelegatedResourceStore(@Value("DelegatedResource") String dbName) {

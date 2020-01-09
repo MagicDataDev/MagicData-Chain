@@ -1,6 +1,6 @@
 package org.mdc.core.exception;
 
-public class UnLinkedBlockException extends TronException {
+public class UnLinkedBlockException extends MdcException {
 
   public UnLinkedBlockException() {
     super();

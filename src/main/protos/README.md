@@ -1,5 +1,3 @@
-# protocol [![Build Status](https://travis-ci.org/tronprotocol/protocol.svg?branch=master)](https://travis-ci.org/tronprotocol/protocol)
-
 
 # The protocol of mdc including api and message.
 

@@ -8,7 +8,7 @@ import org.mdc.common.storage.leveldb.LevelDbDataSourceImpl;
 import org.mdc.common.storage.leveldb.RocksDbDataSourceImpl;
 import org.mdc.core.config.args.Args;
 import org.mdc.core.db.api.IndexHelper;
-import org.mdc.core.db2.core.ITronChainBase;
+import org.mdc.core.db2.core.IMdcChainBase;
 import org.mdc.core.exception.BadItemException;
 import org.mdc.core.exception.ItemNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +18,7 @@ import java.util.Iterator;
 import java.util.Map.Entry;
 
 @Slf4j(topic = "DB")
-public abstract class TronDatabase<T> implements ITronChainBase<T> {
+public abstract class MdcDatabase<T> implements IMdcChainBase<T> {
 
   protected DbSourceInter<byte[]> dbSource;
   @Getter
@@ -27,7 +27,7 @@ public abstract class TronDatabase<T> implements ITronChainBase<T> {
   @Autowired(required = false)
   protected IndexHelper indexHelper;
 
-  protected TronDatabase(String dbName) {
+  protected MdcDatabase(String dbName) {
     this.dbName = dbName;
 
     if ("LEVELDB".equals(Args.getInstance().getStorage().getDbEngine().toUpperCase())) {
@@ -43,7 +43,7 @@ public abstract class TronDatabase<T> implements ITronChainBase<T> {
     dbSource.initDB();
   }
 
-  protected TronDatabase() {
+  protected MdcDatabase() {
   }
 
   public DbSourceInter<byte[]> getDbSource() {

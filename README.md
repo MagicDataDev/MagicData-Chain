@@ -105,7 +105,7 @@ java -jar MdcFullNode.jar -p 650950B193DDDDB35B6E48912DD28F7AB0E7140C1BFDEFD4933
 14:57:34.617 INFO  [main] [app](Args.java:1367)
 
 14:57:34.617 INFO  [main] [app](FullNode.java:58) not in debug mode, it will check energy time
-14:57:34.705 INFO  [main] [o.t.c.a.TronApplicationContext](AbstractApplicationContext.java:573) Refreshing org.mdc.common.application.TronApplicationContext@7b02881e: startup date [Wed Jan 08 14:57:34 CST 2020]; root of context hierarchy
+14:57:34.705 INFO  [main] [o.t.c.a.MdcApplicationContext](AbstractApplicationContext.java:573) Refreshing org.mdc.common.application.MdcApplicationContext@7b02881e: startup date [Wed Jan 08 14:57:34 CST 2020]; root of context hierarchy
 14:57:35.524 INFO  [main] [o.s.b.f.a.AutowiredAnnotationBeanPostProcessor](AutowiredAnnotationBeanPostProcessor.java:153) JSR-330 'javax.inject.Inject' annotation found and supported for autowiring
 14:57:35.693 INFO  [main] [app](DefaultConfig.java:65) key-value data source created.
 14:57:36.150 INFO  [main] [DB](DynamicPropertiesStore.java:1575) update latest block header timestamp = 0

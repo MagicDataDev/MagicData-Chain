@@ -15,7 +15,7 @@ import org.mdc.common.overlay.message.MessageCodec;
 import org.mdc.common.overlay.message.StaticMessages;
 import org.mdc.core.db.ByteArrayWrapper;
 import org.mdc.core.exception.P2pException;
-import org.mdc.core.net.TronNetHandler;
+import org.mdc.core.net.MdcNetHandler;
 import org.mdc.protos.Protocol.ReasonCode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -54,7 +54,7 @@ public class Channel {
   private P2pHandler p2pHandler;
 
   @Autowired
-  private TronNetHandler tronNetHandler;
+  private MdcNetHandler MdcNetHandler;
 
   private ChannelManager channelManager;
 
@@ -66,7 +66,7 @@ public class Channel {
 
   private long startTime;
 
-  private TronState tronState = TronState.INIT;
+  private MdcState mdcState = MdcState.INIT;
 
   protected NodeStatistics nodeStatistics;
 
@@ -100,10 +100,10 @@ public class Channel {
     msgQueue.setChannel(this);
     handshakeHandler.setChannel(this, remoteId);
     p2pHandler.setChannel(this);
-    tronNetHandler.setChannel(this);
+    MdcNetHandler.setChannel(this);
 
     p2pHandler.setMsgQueue(msgQueue);
-    tronNetHandler.setMsgQueue(msgQueue);
+    MdcNetHandler.setMsgQueue(msgQueue);
   }
 
   public void publicHandshakeFinished(ChannelHandlerContext ctx, HelloMessage msg) {
@@ -113,9 +113,9 @@ public class Channel {
     msgQueue.activate(ctx);
     ctx.pipeline().addLast("messageCodec", messageCodec);
     ctx.pipeline().addLast("p2p", p2pHandler);
-    ctx.pipeline().addLast("data", tronNetHandler);
+    ctx.pipeline().addLast("data", MdcNetHandler);
     setStartTime(msg.getTimestamp());
-    setTronState(TronState.HANDSHAKE_FINISHED);
+    setMdcState(MdcState.HANDSHAKE_FINISHED);
     getNodeStatistics().p2pHandShake.add();
     logger.info("Finish handshake with {}.", ctx.channel().remoteAddress());
   }
@@ -166,7 +166,7 @@ public class Channel {
     ctx.close();
   }
 
-  public enum TronState {
+  public enum MdcState {
     INIT,
     HANDSHAKE_FINISHED,
     START_TO_SYNC,
@@ -212,9 +212,9 @@ public class Channel {
     return startTime;
   }
 
-  public void setTronState(TronState tronState) {
-    this.tronState = tronState;
-    logger.info("Peer {} status change to {}.", inetSocketAddress, tronState);
+  public void setMdcState(MdcState MdcState) {
+    this.mdcState = MdcState;
+    logger.info("Peer {} status change to {}.", inetSocketAddress, MdcState);
   }
 
   public boolean isActive() {

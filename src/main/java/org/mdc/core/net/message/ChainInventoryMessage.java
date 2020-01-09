@@ -10,7 +10,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class ChainInventoryMessage extends TronMessage {
+public class ChainInventoryMessage extends MdcMessage {
 
   protected ChainInventory chainInventory;
 

@@ -1,6 +1,6 @@
 package org.mdc.core.exception;
 
-public class NonUniqueObjectException extends TronException {
+public class NonUniqueObjectException extends MdcException {
 
   public NonUniqueObjectException() {
     super();

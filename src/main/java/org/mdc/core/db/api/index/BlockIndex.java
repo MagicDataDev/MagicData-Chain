@@ -10,7 +10,7 @@ import org.mdc.common.utils.Sha256Hash;
 import org.mdc.core.capsule.BlockCapsule;
 import org.mdc.core.capsule.TransactionCapsule;
 import org.mdc.core.db.common.WrappedByteArray;
-import org.mdc.core.db2.core.ITronChainBase;
+import org.mdc.core.db2.core.IMdcChainBase;
 import org.mdc.protos.Protocol.Block;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -37,7 +37,7 @@ public class BlockIndex extends AbstractIndex<BlockCapsule, Block> {
 
   @Autowired
   public BlockIndex(
-      @Qualifier("blockStore") final ITronChainBase<BlockCapsule> database) {
+      @Qualifier("blockStore") final IMdcChainBase<BlockCapsule> database) {
     super(database);
   }
 

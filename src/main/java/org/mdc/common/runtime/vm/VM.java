@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.mdc.common.crypto.Hash.sha3;
-import static org.mdc.common.runtime.utils.MUtil.convertToTronAddress;
+import static org.mdc.common.runtime.utils.MUtil.convertToMdcAddress;
 import static org.mdc.common.runtime.vm.OpCode.*;
 import static org.mdc.common.utils.ByteUtil.EMPTY_BYTE_ARRAY;
 
@@ -1446,7 +1446,7 @@ public class VM {
   }
 
   private boolean isDeadAccount(Program program, DataWord address) {
-    return program.getContractState().getAccount(convertToTronAddress(address.getLast20Bytes()))
+    return program.getContractState().getAccount(convertToMdcAddress(address.getLast20Bytes()))
         == null;
   }
 

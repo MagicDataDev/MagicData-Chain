@@ -12,7 +12,7 @@ import java.util.Objects;
 
 //todo ： need Compatibility test
 @Component
-public class AccountIdIndexStore extends TronStoreWithRevoking<BytesCapsule> {
+public class AccountIdIndexStore extends MdcStoreWithRevoking<BytesCapsule> {
 
   @Autowired
   public AccountIdIndexStore(@Value("accountid-index") String dbName) {

@@ -1,6 +1,6 @@
 package org.mdc.core.exception;
 
-public class VMMemoryOverflowException extends TronException {
+public class VMMemoryOverflowException extends MdcException {
 
   public VMMemoryOverflowException() {
     super("VM memory overflow");

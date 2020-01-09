@@ -7,9 +7,9 @@ import org.mdc.core.config.Parameter.ChainConstant;
 import org.mdc.core.config.Parameter.NodeConstant;
 import org.mdc.core.exception.P2pException;
 import org.mdc.core.exception.P2pException.TypeEnum;
-import org.mdc.core.net.TronNetDelegate;
+import org.mdc.core.net.MdcNetDelegate;
 import org.mdc.core.net.message.ChainInventoryMessage;
-import org.mdc.core.net.message.TronMessage;
+import org.mdc.core.net.message.MdcMessage;
 import org.mdc.core.net.peer.PeerConnection;
 import org.mdc.core.net.service.SyncService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,16 +23,16 @@ import static org.mdc.core.config.Parameter.ChainConstant.BLOCK_PRODUCED_INTERVA
 
 @Slf4j(topic = "net")
 @Component
-public class ChainInventoryMsgHandler implements TronMsgHandler {
+public class ChainInventoryMsgHandler implements MdcMsgHandler {
 
   @Autowired
-  private TronNetDelegate tronNetDelegate;
+  private MdcNetDelegate MdcNetDelegate;
 
   @Autowired
   private SyncService syncService;
 
   @Override
-  public void processMessage(PeerConnection peer, TronMessage msg) throws P2pException {
+  public void processMessage(PeerConnection peer, MdcMessage msg) throws P2pException {
 
     ChainInventoryMessage chainInventoryMessage = (ChainInventoryMessage) msg;
 
@@ -44,7 +44,7 @@ public class ChainInventoryMsgHandler implements TronMsgHandler {
 
     Deque<BlockId> blockIdWeGet = new LinkedList<>(chainInventoryMessage.getBlockIds());
 
-    if (blockIdWeGet.size() == 1 && tronNetDelegate.containBlock(blockIdWeGet.peek())) {
+    if (blockIdWeGet.size() == 1 && MdcNetDelegate.containBlock(blockIdWeGet.peek())) {
       peer.setNeedSyncFromPeer(false);
       return;
     }
@@ -61,8 +61,8 @@ public class ChainInventoryMsgHandler implements TronMsgHandler {
     peer.setRemainNum(chainInventoryMessage.getRemainNum());
     peer.getSyncBlockToFetch().addAll(blockIdWeGet);
 
-    synchronized (tronNetDelegate.getBlockLock()) {
-      while (!peer.getSyncBlockToFetch().isEmpty() && tronNetDelegate
+    synchronized (MdcNetDelegate.getBlockLock()) {
+      while (!peer.getSyncBlockToFetch().isEmpty() && MdcNetDelegate
           .containBlock(peer.getSyncBlockToFetch().peek())) {
         BlockId blockId = peer.getSyncBlockToFetch().pop();
         peer.setBlockBothHave(blockId);
@@ -115,12 +115,12 @@ public class ChainInventoryMsgHandler implements TronMsgHandler {
           + ", peer: " + blockIds.get(0).getString());
     }
 
-    if (tronNetDelegate.getHeadBlockId().getNum() > 0) {
+    if (MdcNetDelegate.getHeadBlockId().getNum() > 0) {
       long maxRemainTime =
-          ChainConstant.CLOCK_MAX_DELAY + System.currentTimeMillis() - tronNetDelegate
-              .getBlockTime(tronNetDelegate.getSolidBlockId());
+          ChainConstant.CLOCK_MAX_DELAY + System.currentTimeMillis() - MdcNetDelegate
+              .getBlockTime(MdcNetDelegate.getSolidBlockId());
       long maxFutureNum =
-          maxRemainTime / BLOCK_PRODUCED_INTERVAL + tronNetDelegate.getSolidBlockId().getNum();
+          maxRemainTime / BLOCK_PRODUCED_INTERVAL + MdcNetDelegate.getSolidBlockId().getNum();
       long lastNum = blockIds.get(blockIds.size() - 1).getNum();
       if (lastNum + msg.getRemainNum() > maxFutureNum) {
         throw new P2pException(TypeEnum.BAD_MESSAGE, "lastNum: " + lastNum + " + remainNum: "

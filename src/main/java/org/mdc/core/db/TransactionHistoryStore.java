@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component
-public class TransactionHistoryStore extends TronStoreWithRevoking<TransactionInfoCapsule> {
+public class TransactionHistoryStore extends MdcStoreWithRevoking<TransactionInfoCapsule> {
 
   @Autowired
   public TransactionHistoryStore(@Value("transactionHistoryStore") String dbName) {

@@ -7,20 +7,20 @@ import org.mdc.core.db.Manager;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
-public class TronApplicationContext extends AnnotationConfigApplicationContext {
+public class MdcApplicationContext extends AnnotationConfigApplicationContext {
 
-  public TronApplicationContext() {
+  public MdcApplicationContext() {
   }
 
-  public TronApplicationContext(DefaultListableBeanFactory beanFactory) {
+  public MdcApplicationContext(DefaultListableBeanFactory beanFactory) {
     super(beanFactory);
   }
 
-  public TronApplicationContext(Class<?>... annotatedClasses) {
+  public MdcApplicationContext(Class<?>... annotatedClasses) {
     super(annotatedClasses);
   }
 
-  public TronApplicationContext(String... basePackages) {
+  public MdcApplicationContext(String... basePackages) {
     super(basePackages);
   }
 

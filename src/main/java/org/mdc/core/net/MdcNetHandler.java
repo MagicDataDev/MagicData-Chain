@@ -4,7 +4,7 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import org.mdc.common.overlay.server.Channel;
 import org.mdc.common.overlay.server.MessageQueue;
-import org.mdc.core.net.message.TronMessage;
+import org.mdc.core.net.message.MdcMessage;
 import org.mdc.core.net.peer.PeerConnection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -12,24 +12,24 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Scope("prototype")
-public class TronNetHandler extends SimpleChannelInboundHandler<TronMessage> {
+public class MdcNetHandler extends SimpleChannelInboundHandler<MdcMessage> {
 
   protected PeerConnection peer;
 
   private MessageQueue msgQueue;
 
   @Autowired
-  private TronNetService tronNetService;
+  private MdcNetService MdcNetService;
 
 //  @Autowired
-//  private TronNetHandler (final ApplicationContext ctx){
-//    tronNetService = ctx.getBean(TronNetService.class);
+//  private MdcNetHandler (final ApplicationContext ctx){
+//    MdcNetService = ctx.getBean(MdcNetService.class);
 //  }
 
   @Override
-  public void channelRead0(final ChannelHandlerContext ctx, TronMessage msg) throws Exception {
+  public void channelRead0(final ChannelHandlerContext ctx, MdcMessage msg) throws Exception {
     msgQueue.receivedMessage(msg);
-    tronNetService.onMessage(peer, msg);
+    MdcNetService.onMessage(peer, msg);
   }
 
   @Override

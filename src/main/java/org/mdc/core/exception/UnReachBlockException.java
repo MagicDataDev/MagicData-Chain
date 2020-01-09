@@ -1,6 +1,6 @@
 package org.mdc.core.exception;
 
-public class UnReachBlockException extends TronException {
+public class UnReachBlockException extends MdcException {
 
   public UnReachBlockException() {
     super();

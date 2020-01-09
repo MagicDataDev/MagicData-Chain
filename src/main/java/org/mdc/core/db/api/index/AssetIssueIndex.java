@@ -8,7 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.mdc.common.utils.ByteArray;
 import org.mdc.core.capsule.AssetIssueCapsule;
 import org.mdc.core.db.common.WrappedByteArray;
-import org.mdc.core.db2.core.ITronChainBase;
+import org.mdc.core.db2.core.IMdcChainBase;
 import org.mdc.protos.Contract.AssetIssueContract;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -29,7 +29,7 @@ public class AssetIssueIndex extends AbstractIndex<AssetIssueCapsule, AssetIssue
 
   @Autowired
   public AssetIssueIndex(
-      @Qualifier("assetIssueStore") final ITronChainBase<AssetIssueCapsule> database) {
+      @Qualifier("assetIssueStore") final IMdcChainBase<AssetIssueCapsule> database) {
     super(database);
   }
 

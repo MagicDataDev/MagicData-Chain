@@ -12,7 +12,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @Component
-public class ProposalStore extends TronStoreWithRevoking<ProposalCapsule> {
+public class ProposalStore extends MdcStoreWithRevoking<ProposalCapsule> {
 
   @Autowired
   public ProposalStore(@Value("proposal") String dbName) {

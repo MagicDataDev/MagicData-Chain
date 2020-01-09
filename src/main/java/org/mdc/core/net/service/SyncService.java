@@ -5,13 +5,13 @@ import com.google.common.cache.CacheBuilder;
 import javafx.util.Pair;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
-import org.mdc.common.overlay.server.Channel.TronState;
+import org.mdc.common.overlay.server.Channel.MdcState;
 import org.mdc.core.capsule.BlockCapsule;
 import org.mdc.core.capsule.BlockCapsule.BlockId;
 import org.mdc.core.config.Parameter.NodeConstant;
 import org.mdc.core.exception.P2pException;
 import org.mdc.core.exception.P2pException.TypeEnum;
-import org.mdc.core.net.TronNetDelegate;
+import org.mdc.core.net.MdcNetDelegate;
 import org.mdc.core.net.message.BlockMessage;
 import org.mdc.core.net.message.FetchInvDataMessage;
 import org.mdc.core.net.message.SyncBlockChainMessage;
@@ -34,7 +34,7 @@ import static org.mdc.core.config.Parameter.NetConstants.MAX_BLOCK_FETCH_PER_PEE
 public class SyncService {
 
   @Autowired
-  private TronNetDelegate tronNetDelegate;
+  private MdcNetDelegate MdcNetDelegate;
 
   private Map<BlockMessage, PeerConnection> blockWaitToProcess = new ConcurrentHashMap<>();
 
@@ -84,11 +84,11 @@ public class SyncService {
   }
 
   public void startSync(PeerConnection peer) {
-    peer.setTronState(TronState.SYNCING);
+    peer.setMdcState(MdcState.SYNCING);
     peer.setNeedSyncFromPeer(true);
     peer.getSyncBlockToFetch().clear();
     peer.setRemainNum(0);
-    peer.setBlockBothHave(tronNetDelegate.getGenesisBlockId());
+    peer.setBlockBothHave(MdcNetDelegate.getGenesisBlockId());
     syncNext(peer);
   }
 
@@ -139,18 +139,18 @@ public class SyncService {
     List<BlockId> blockIds = new ArrayList<>(peer.getSyncBlockToFetch());
     LinkedList<BlockId> forkList = new LinkedList<>();
     LinkedList<BlockId> summary = new LinkedList<>();
-    long syncBeginNumber = tronNetDelegate.getSyncBeginNumber();
+    long syncBeginNumber = MdcNetDelegate.getSyncBeginNumber();
     long low = syncBeginNumber < 0 ? 0 : syncBeginNumber;
     long highNoFork;
     long high;
 
     if (beginBlockId.getNum() == 0) {
-      highNoFork = high = tronNetDelegate.getHeadBlockId().getNum();
+      highNoFork = high = MdcNetDelegate.getHeadBlockId().getNum();
     } else {
-      if (tronNetDelegate.containBlockInMainChain(beginBlockId)) {
+      if (MdcNetDelegate.containBlockInMainChain(beginBlockId)) {
         highNoFork = high = beginBlockId.getNum();
       } else {
-        forkList = tronNetDelegate.getBlockChainHashesOnFork(beginBlockId);
+        forkList = MdcNetDelegate.getBlockChainHashesOnFork(beginBlockId);
         if (forkList.isEmpty()) {
           throw new P2pException(TypeEnum.SYNC_FAILED,
               "can't find blockId: " + beginBlockId.getString());
@@ -173,7 +173,7 @@ public class SyncService {
 
     while (low <= realHigh) {
       if (low <= highNoFork) {
-        summary.offer(tronNetDelegate.getBlockIdByNum(low));
+        summary.offer(MdcNetDelegate.getBlockIdByNum(low));
       } else if (low <= high) {
         summary.offer(forkList.get((int) (low - highNoFork - 1)));
       } else {
@@ -188,7 +188,7 @@ public class SyncService {
   private void startFetchSyncBlock() {
     HashMap<PeerConnection, List<BlockId>> send = new HashMap<>();
 
-    tronNetDelegate.getActivePeer().stream()
+    MdcNetDelegate.getActivePeer().stream()
         .filter(peer -> peer.isNeedSyncFromPeer() && peer.isIdle())
         .forEach(peer -> {
           if (!send.containsKey(peer)) {
@@ -226,7 +226,7 @@ public class SyncService {
 
       isProcessed[0] = false;
 
-      synchronized (tronNetDelegate.getBlockLock()) {
+      synchronized (MdcNetDelegate.getBlockLock()) {
         blockWaitToProcess.forEach((msg, peerConnection) -> {
           if (peerConnection.isDisconnect()) {
             blockWaitToProcess.remove(msg);
@@ -234,7 +234,7 @@ public class SyncService {
             return;
           }
           final boolean[] isFound = {false};
-          tronNetDelegate.getActivePeer().stream()
+          MdcNetDelegate.getActivePeer().stream()
               .filter(peer -> msg.getBlockId().equals(peer.getSyncBlockToFetch().peek()))
               .forEach(peer -> {
                 peer.getSyncBlockToFetch().pop();
@@ -255,12 +255,12 @@ public class SyncService {
     boolean flag = true;
     BlockId blockId = block.getBlockId();
     try {
-      tronNetDelegate.processBlock(block);
+      MdcNetDelegate.processBlock(block);
     } catch (Exception e) {
       logger.error("Process sync block {} failed.", blockId.getString(), e);
       flag = false;
     }
-    for (PeerConnection peer : tronNetDelegate.getActivePeer()) {
+    for (PeerConnection peer : MdcNetDelegate.getActivePeer()) {
       if (peer.getSyncBlockInProcess().remove(blockId)) {
         if (flag) {
           peer.setBlockBothHave(blockId);

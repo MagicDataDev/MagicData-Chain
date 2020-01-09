@@ -1,6 +1,6 @@
 package org.mdc.core.exception;
 
-public class StoreException extends TronException {
+public class StoreException extends MdcException {
 
   public StoreException() {
     super();

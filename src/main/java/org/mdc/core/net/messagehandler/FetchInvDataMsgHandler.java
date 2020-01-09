@@ -10,7 +10,7 @@ import org.mdc.core.config.Parameter.ChainConstant;
 import org.mdc.core.config.Parameter.NodeConstant;
 import org.mdc.core.exception.P2pException;
 import org.mdc.core.exception.P2pException.TypeEnum;
-import org.mdc.core.net.TronNetDelegate;
+import org.mdc.core.net.MdcNetDelegate;
 import org.mdc.core.net.message.*;
 import org.mdc.core.net.peer.Item;
 import org.mdc.core.net.peer.PeerConnection;
@@ -26,10 +26,10 @@ import java.util.List;
 
 @Slf4j(topic = "net")
 @Component
-public class FetchInvDataMsgHandler implements TronMsgHandler {
+public class FetchInvDataMsgHandler implements MdcMsgHandler {
 
   @Autowired
-  private TronNetDelegate tronNetDelegate;
+  private MdcNetDelegate MdcNetDelegate;
 
   @Autowired
   private SyncService syncService;
@@ -40,7 +40,7 @@ public class FetchInvDataMsgHandler implements TronMsgHandler {
   private int MAX_SIZE = 1_000_000;
 
   @Override
-  public void processMessage(PeerConnection peer, TronMessage msg) throws P2pException {
+  public void processMessage(PeerConnection peer, MdcMessage msg) throws P2pException {
 
     FetchInvDataMessage fetchInvDataMsg = (FetchInvDataMessage) msg;
 
@@ -56,7 +56,7 @@ public class FetchInvDataMsgHandler implements TronMsgHandler {
       Message message = advService.getMessage(item);
       if (message == null) {
         try {
-          message = tronNetDelegate.getData(hash, type);
+          message = MdcNetDelegate.getData(hash, type);
         } catch (Exception e) {
           logger.error("Fetch item {} failed. reason: {}", item, hash, e.getMessage());
           peer.disconnect(ReasonCode.FETCH_FAIL);
@@ -95,7 +95,7 @@ public class FetchInvDataMsgHandler implements TronMsgHandler {
           throw new P2pException(TypeEnum.BAD_MESSAGE, "not spread inv: {}" + hash);
         }
       }
-      int fetchCount = peer.getNodeStatistics().messageStatistics.tronInTrxFetchInvDataElement
+      int fetchCount = peer.getNodeStatistics().messageStatistics.mdcInTrxFetchInvDataElement
           .getCount(10);
       int maxCount = advService.getTrxCount().getCount(60);
       if (fetchCount > maxCount) {
@@ -111,9 +111,9 @@ public class FetchInvDataMsgHandler implements TronMsgHandler {
         }
       }
       if (isAdv) {
-        MessageCount tronOutAdvBlock = peer.getNodeStatistics().messageStatistics.tronOutAdvBlock;
-        tronOutAdvBlock.add(fetchInvDataMsg.getHashList().size());
-        int outBlockCountIn1min = tronOutAdvBlock.getCount(60);
+        MessageCount mdcOutAdvBlock = peer.getNodeStatistics().messageStatistics.mdcOutAdvBlock;
+        mdcOutAdvBlock.add(fetchInvDataMsg.getHashList().size());
+        int outBlockCountIn1min = mdcOutAdvBlock.getCount(60);
         int producedBlockIn2min = 120_000 / ChainConstant.BLOCK_PRODUCED_INTERVAL;
         if (outBlockCountIn1min > producedBlockIn2min) {
           throw new P2pException(TypeEnum.BAD_MESSAGE, "producedBlockIn2min: " + producedBlockIn2min

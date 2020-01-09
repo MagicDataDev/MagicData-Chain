@@ -711,7 +711,7 @@ public class RuntimeImpl implements Runtime {
   public void finalization() {
     if (StringUtils.isEmpty(runtimeError)) {
       for (DataWord contract : result.getDeleteAccounts()) {
-        deposit.deleteContract(convertToTronAddress((contract.getLast20Bytes())));
+        deposit.deleteContract(convertToMdcAddress((contract.getLast20Bytes())));
       }
     }
 

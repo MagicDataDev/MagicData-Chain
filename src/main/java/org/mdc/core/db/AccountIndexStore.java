@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 import java.util.Objects;
 
 @Component
-public class AccountIndexStore extends TronStoreWithRevoking<BytesCapsule> {
+public class AccountIndexStore extends MdcStoreWithRevoking<BytesCapsule> {
 
   @Autowired
   public AccountIndexStore(@Value("account-index") String dbName) {

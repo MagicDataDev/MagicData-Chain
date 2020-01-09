@@ -1,6 +1,6 @@
 package org.mdc.core.exception;
 
-public class ValidateScheduleException extends TronException {
+public class ValidateScheduleException extends MdcException {
 
   public ValidateScheduleException() {
     super();

@@ -27,7 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static java.lang.String.format;
-import static org.mdc.common.runtime.utils.MUtil.convertToTronAddress;
+import static org.mdc.common.runtime.utils.MUtil.convertToMdcAddress;
 import static org.mdc.common.runtime.vm.trace.Serializers.serializeFieldsOnly;
 import static org.mdc.common.utils.ByteUtil.toHexString;
 
@@ -45,7 +45,7 @@ public class ProgramTrace {
   public ProgramTrace(VMConfig config, ProgramInvoke programInvoke) {
     if (programInvoke != null && config.vmTrace()) {
       contractAddress = Hex
-          .toHexString(convertToTronAddress(programInvoke.getContractAddress().getLast20Bytes()));
+          .toHexString(convertToMdcAddress(programInvoke.getContractAddress().getLast20Bytes()));
     }
   }
 

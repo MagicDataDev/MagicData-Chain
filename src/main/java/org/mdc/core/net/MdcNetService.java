@@ -7,7 +7,7 @@ import org.mdc.core.db.Manager;
 import org.mdc.core.exception.P2pException;
 import org.mdc.core.exception.P2pException.TypeEnum;
 import org.mdc.core.net.message.BlockMessage;
-import org.mdc.core.net.message.TronMessage;
+import org.mdc.core.net.message.MdcMessage;
 import org.mdc.core.net.messagehandler.*;
 import org.mdc.core.net.peer.PeerConnection;
 import org.mdc.core.net.peer.PeerStatusCheck;
@@ -19,7 +19,7 @@ import org.springframework.stereotype.Component;
 
 @Slf4j(topic = "net")
 @Component
-public class TronNetService {
+public class MdcNetService {
 
   @Autowired
   private ChannelManager channelManager;
@@ -56,13 +56,13 @@ public class TronNetService {
   private Manager manager;
 
   public void start() {
-    manager.setTronNetService(this);
+    manager.setMdcNetService(this);
     channelManager.init();
     advService.init();
     syncService.init();
     peerStatusCheck.init();
     transactionsMsgHandler.init();
-    logger.info("TronNetService start successfully.");
+    logger.info("MdcNetService start successfully.");
   }
 
   public void close() {
@@ -71,7 +71,7 @@ public class TronNetService {
     syncService.close();
     peerStatusCheck.close();
     transactionsMsgHandler.close();
-    logger.info("TronNetService closed successfully.");
+    logger.info("MdcNetService closed successfully.");
   }
 
   public void broadcast(Message msg) {
@@ -82,7 +82,7 @@ public class TronNetService {
     advService.fastForward(msg);
   }
 
-  protected void onMessage(PeerConnection peer, TronMessage msg) {
+  protected void onMessage(PeerConnection peer, MdcMessage msg) {
     try {
       switch (msg.getType()) {
         case SYNC_BLOCK_CHAIN:
@@ -111,7 +111,7 @@ public class TronNetService {
     }
   }
 
-  private void processException(PeerConnection peer, TronMessage msg, Exception ex) {
+  private void processException(PeerConnection peer, MdcMessage msg, Exception ex) {
     ReasonCode code;
 
     if (ex instanceof P2pException) {

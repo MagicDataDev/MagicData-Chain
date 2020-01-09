@@ -6,7 +6,7 @@ import org.mdc.core.capsule.BlockCapsule;
 import org.mdc.core.capsule.BlockCapsule.BlockId;
 import org.mdc.core.capsule.TransactionCapsule;
 
-public class BlockMessage extends TronMessage {
+public class BlockMessage extends MdcMessage {
 
   private BlockCapsule block;
 

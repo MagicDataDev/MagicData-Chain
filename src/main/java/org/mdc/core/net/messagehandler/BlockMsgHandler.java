@@ -6,9 +6,9 @@ import org.mdc.core.capsule.BlockCapsule.BlockId;
 import org.mdc.core.config.args.Args;
 import org.mdc.core.exception.P2pException;
 import org.mdc.core.exception.P2pException.TypeEnum;
-import org.mdc.core.net.TronNetDelegate;
+import org.mdc.core.net.MdcNetDelegate;
 import org.mdc.core.net.message.BlockMessage;
-import org.mdc.core.net.message.TronMessage;
+import org.mdc.core.net.message.MdcMessage;
 import org.mdc.core.net.peer.Item;
 import org.mdc.core.net.peer.PeerConnection;
 import org.mdc.core.net.service.AdvService;
@@ -24,10 +24,10 @@ import static org.mdc.core.config.Parameter.ChainConstant.BLOCK_SIZE;
 
 @Slf4j(topic = "net")
 @Component
-public class BlockMsgHandler implements TronMsgHandler {
+public class BlockMsgHandler implements MdcMsgHandler {
 
   @Autowired
-  private TronNetDelegate tronNetDelegate;
+  private MdcNetDelegate MdcNetDelegate;
 
   @Autowired
   private AdvService advService;
@@ -43,7 +43,7 @@ public class BlockMsgHandler implements TronMsgHandler {
   private boolean fastForward = Args.getInstance().isFastForward();
 
   @Override
-  public void processMessage(PeerConnection peer, TronMessage msg) throws P2pException {
+  public void processMessage(PeerConnection peer, MdcMessage msg) throws P2pException {
 
     BlockMessage blockMessage = (BlockMessage) msg;
     BlockId blockId = blockMessage.getBlockId();
@@ -58,7 +58,7 @@ public class BlockMsgHandler implements TronMsgHandler {
     } else {
       Long time = peer.getAdvInvRequest().remove(new Item(blockId, InventoryType.BLOCK));
       long now = System.currentTimeMillis();
-      long interval = blockId.getNum() - tronNetDelegate.getHeadBlockId().getNum();
+      long interval = blockId.getNum() - MdcNetDelegate.getHeadBlockId().getNum();
       processBlock(peer, blockMessage.getBlockCapsule());
       logger.info(
           "Receive block/interval {}/{} from {} fetch/delay {}/{}ms, txs/process {}/{}ms, witness: {}",
@@ -91,9 +91,9 @@ public class BlockMsgHandler implements TronMsgHandler {
 
   private void processBlock(PeerConnection peer, BlockCapsule block) throws P2pException {
     BlockId blockId = block.getBlockId();
-    if (!tronNetDelegate.containBlock(block.getParentBlockId())) {
+    if (!MdcNetDelegate.containBlock(block.getParentBlockId())) {
       logger.warn("Get unlink block {} from {}, head is {}.", blockId.getString(),
-          peer.getInetAddress(), tronNetDelegate.getHeadBlockId().getString());
+          peer.getInetAddress(), MdcNetDelegate.getHeadBlockId().getString());
       syncService.startSync(peer);
       return;
     }
@@ -105,20 +105,20 @@ public class BlockMsgHandler implements TronMsgHandler {
     }
 
     if (fastForward) {
-      if (block.getNum() < tronNetDelegate.getHeadBlockId().getNum()) {
+      if (block.getNum() < MdcNetDelegate.getHeadBlockId().getNum()) {
         logger.warn("Receive a low block {}, head {}",
-            blockId.getString(), tronNetDelegate.getHeadBlockId().getString());
+            blockId.getString(), MdcNetDelegate.getHeadBlockId().getString());
         return;
       }
-      if (tronNetDelegate.validBlock(block)) {
+      if (MdcNetDelegate.validBlock(block)) {
         advService.fastForward(new BlockMessage(block));
-        tronNetDelegate.trustNode(peer);
+        MdcNetDelegate.trustNode(peer);
       }
     }
 
-    tronNetDelegate.processBlock(block);
+    MdcNetDelegate.processBlock(block);
     witnessProductBlockService.validWitnessProductTwoBlock(block);
-    tronNetDelegate.getActivePeer().forEach(p -> {
+    MdcNetDelegate.getActivePeer().forEach(p -> {
       if (p.getAdvInvReceive().getIfPresent(blockId) != null) {
         p.setBlockBothHave(blockId);
       }

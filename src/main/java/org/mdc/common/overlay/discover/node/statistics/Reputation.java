@@ -89,29 +89,29 @@ public class Reputation {
     @Override
     int calculate(int baseScore) {
       if (t.wasDisconnected()) {
-        if (t.getTronLastLocalDisconnectReason() == null
-            && t.getTronLastRemoteDisconnectReason() == null) {
+        if (t.getMdcLastLocalDisconnectReason() == null
+            && t.getMdcLastRemoteDisconnectReason() == null) {
           // means connection was dropped without reporting any reason - bad
           baseScore *= 0.8;
-        } else if (t.getTronLastLocalDisconnectReason() != ReasonCode.REQUESTED) {
+        } else if (t.getMdcLastLocalDisconnectReason() != ReasonCode.REQUESTED) {
           // the disconnect was not initiated by discover mode
-          if (t.getTronLastRemoteDisconnectReason() == ReasonCode.TOO_MANY_PEERS
-              || t.getTronLastLocalDisconnectReason() == ReasonCode.TOO_MANY_PEERS
-              || t.getTronLastRemoteDisconnectReason() == ReasonCode.TOO_MANY_PEERS_WITH_SAME_IP
-              || t.getTronLastLocalDisconnectReason() == ReasonCode.TOO_MANY_PEERS_WITH_SAME_IP
-              || t.getTronLastRemoteDisconnectReason() == ReasonCode.DUPLICATE_PEER
-              || t.getTronLastLocalDisconnectReason() == ReasonCode.DUPLICATE_PEER
-              || t.getTronLastRemoteDisconnectReason() == ReasonCode.TIME_OUT
-              || t.getTronLastLocalDisconnectReason() == ReasonCode.TIME_OUT
-              || t.getTronLastRemoteDisconnectReason() == ReasonCode.PING_TIMEOUT
-              || t.getTronLastLocalDisconnectReason() == ReasonCode.PING_TIMEOUT
-              || t.getTronLastRemoteDisconnectReason() == ReasonCode.CONNECT_FAIL
-              || t.getTronLastLocalDisconnectReason() == ReasonCode.CONNECT_FAIL) {
+          if (t.getMdcLastRemoteDisconnectReason() == ReasonCode.TOO_MANY_PEERS
+              || t.getMdcLastLocalDisconnectReason() == ReasonCode.TOO_MANY_PEERS
+              || t.getMdcLastRemoteDisconnectReason() == ReasonCode.TOO_MANY_PEERS_WITH_SAME_IP
+              || t.getMdcLastLocalDisconnectReason() == ReasonCode.TOO_MANY_PEERS_WITH_SAME_IP
+              || t.getMdcLastRemoteDisconnectReason() == ReasonCode.DUPLICATE_PEER
+              || t.getMdcLastLocalDisconnectReason() == ReasonCode.DUPLICATE_PEER
+              || t.getMdcLastRemoteDisconnectReason() == ReasonCode.TIME_OUT
+              || t.getMdcLastLocalDisconnectReason() == ReasonCode.TIME_OUT
+              || t.getMdcLastRemoteDisconnectReason() == ReasonCode.PING_TIMEOUT
+              || t.getMdcLastLocalDisconnectReason() == ReasonCode.PING_TIMEOUT
+              || t.getMdcLastRemoteDisconnectReason() == ReasonCode.CONNECT_FAIL
+              || t.getMdcLastLocalDisconnectReason() == ReasonCode.CONNECT_FAIL) {
             // The peer is popular, but we were unlucky
             baseScore *= 0.9;
-          } else if (t.getTronLastLocalDisconnectReason() == ReasonCode.RESET) {
+          } else if (t.getMdcLastLocalDisconnectReason() == ReasonCode.RESET) {
             baseScore *= 0.95;
-          } else if (t.getTronLastRemoteDisconnectReason() != ReasonCode.REQUESTED) {
+          } else if (t.getMdcLastRemoteDisconnectReason() != ReasonCode.REQUESTED) {
             // other disconnect reasons
             baseScore *= 0.7;
           }

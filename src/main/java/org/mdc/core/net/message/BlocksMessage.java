@@ -7,7 +7,7 @@ import org.mdc.protos.Protocol.Items;
 
 import java.util.List;
 
-public class BlocksMessage extends TronMessage {
+public class BlocksMessage extends MdcMessage {
 
   private List<Block> blocks;
 

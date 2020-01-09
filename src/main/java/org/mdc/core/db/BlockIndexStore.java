@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 import java.util.Arrays;
 
 @Component
-public class BlockIndexStore extends TronStoreWithRevoking<BytesCapsule> {
+public class BlockIndexStore extends MdcStoreWithRevoking<BytesCapsule> {
 
 
   @Autowired

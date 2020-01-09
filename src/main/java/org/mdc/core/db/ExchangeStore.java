@@ -12,7 +12,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @Component
-public class ExchangeStore extends TronStoreWithRevoking<ExchangeCapsule> {
+public class ExchangeStore extends MdcStoreWithRevoking<ExchangeCapsule> {
 
   @Autowired
   protected ExchangeStore(@Value("exchange") String dbName) {

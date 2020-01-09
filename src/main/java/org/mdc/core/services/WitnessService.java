@@ -9,7 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.joda.time.DateTime;
 import org.mdc.common.application.Application;
 import org.mdc.common.application.Service;
-import org.mdc.common.application.TronApplicationContext;
+import org.mdc.common.application.MdcApplicationContext;
 import org.mdc.common.backup.BackupManager;
 import org.mdc.common.backup.BackupManager.BackupStatusEnum;
 import org.mdc.common.backup.BackupServer;
@@ -23,7 +23,7 @@ import org.mdc.core.config.Parameter.ChainConstant;
 import org.mdc.core.config.args.Args;
 import org.mdc.core.db.Manager;
 import org.mdc.core.exception.*;
-import org.mdc.core.net.TronNetService;
+import org.mdc.core.net.MdcNetService;
 import org.mdc.core.net.message.BlockMessage;
 import org.mdc.core.witness.BlockProductionCondition;
 import org.mdc.core.witness.WitnessController;
@@ -45,7 +45,7 @@ public class WitnessService implements Service {
   @Getter
   private static volatile boolean needSyncCheck = Args.getInstance().isNeedSyncCheck();
 
-  private Application tronApp;
+  private Application mdcApp;
   @Getter
   protected Map<ByteString, WitnessCapsule> localWitnessStateMap = Maps
       .newHashMap(); //  <witnessAccountAddress,WitnessCapsule>
@@ -62,13 +62,13 @@ public class WitnessService implements Service {
 
   private WitnessController controller;
 
-  private TronApplicationContext context;
+  private MdcApplicationContext context;
 
   private BackupManager backupManager;
 
   private BackupServer backupServer;
 
-  private TronNetService tronNetService;
+  private MdcNetService MdcNetService;
 
   private AtomicInteger dupBlockCount = new AtomicInteger(0);
   private AtomicLong dupBlockTime = new AtomicLong(0);
@@ -79,14 +79,14 @@ public class WitnessService implements Service {
   /**
    * Construction method.
    */
-  public WitnessService(Application tronApp, TronApplicationContext context) {
-    this.tronApp = tronApp;
+  public WitnessService(Application mdcApp, MdcApplicationContext context) {
+    this.mdcApp = mdcApp;
     this.context = context;
     backupManager = context.getBean(BackupManager.class);
     backupServer = context.getBean(BackupServer.class);
-    tronNetService = context.getBean(TronNetService.class);
+    MdcNetService = context.getBean(MdcNetService.class);
     generateThread = new Thread(scheduleProductionLoop);
-    manager = tronApp.getDbManager();
+    manager = mdcApp.getDbManager();
     manager.setWitnessService(this);
     controller = manager.getWitnessController();
     new Thread(() -> {
@@ -167,10 +167,10 @@ public class WitnessService implements Service {
       } else {
         logger.debug("Not sync ,now:{},headBlockTime:{},headBlockNumber:{},headBlockId:{}",
             new DateTime(now),
-            new DateTime(this.tronApp.getDbManager().getDynamicPropertiesStore()
+            new DateTime(this.mdcApp.getDbManager().getDynamicPropertiesStore()
                 .getLatestBlockHeaderTimestamp()),
-            this.tronApp.getDbManager().getDynamicPropertiesStore().getLatestBlockHeaderNumber(),
-            this.tronApp.getDbManager().getDynamicPropertiesStore().getLatestBlockHeaderHash());
+            this.mdcApp.getDbManager().getDynamicPropertiesStore().getLatestBlockHeaderNumber(),
+            this.mdcApp.getDbManager().getDynamicPropertiesStore().getLatestBlockHeaderHash());
         return BlockProductionCondition.NOT_SYNCED;
       }
     }
@@ -206,17 +206,17 @@ public class WitnessService implements Service {
 
       BlockCapsule block;
 
-      synchronized (tronApp.getDbManager()) {
+      synchronized (mdcApp.getDbManager()) {
         long slot = controller.getSlotAtTime(now);
         logger.debug("Slot:" + slot);
         if (slot == 0) {
           logger.info("Not time yet,now:{},headBlockTime:{},headBlockNumber:{},headBlockId:{}",
               new DateTime(now),
               new DateTime(
-                  this.tronApp.getDbManager().getDynamicPropertiesStore()
+                  this.mdcApp.getDbManager().getDynamicPropertiesStore()
                       .getLatestBlockHeaderTimestamp()),
-              this.tronApp.getDbManager().getDynamicPropertiesStore().getLatestBlockHeaderNumber(),
-              this.tronApp.getDbManager().getDynamicPropertiesStore().getLatestBlockHeaderHash());
+              this.mdcApp.getDbManager().getDynamicPropertiesStore().getLatestBlockHeaderNumber(),
+              this.mdcApp.getDbManager().getDynamicPropertiesStore().getLatestBlockHeaderHash());
           return BlockProductionCondition.NOT_TIME_YET;
         }
 
@@ -224,7 +224,7 @@ public class WitnessService implements Service {
             .getLatestBlockHeaderTimestamp()) {
           logger.warn("have a timestamp:{} less than or equal to the previous block:{}",
               new DateTime(now), new DateTime(
-                  this.tronApp.getDbManager().getDynamicPropertiesStore()
+                  this.mdcApp.getDbManager().getDynamicPropertiesStore()
                       .getLatestBlockHeaderTimestamp()));
           return BlockProductionCondition.EXCEPTION_PRODUCING_BLOCK;
         }
@@ -268,7 +268,7 @@ public class WitnessService implements Service {
         if (DateTime.now().getMillis() - now > timeout) {
           logger.warn("Task timeout ( > {}ms)，startTime:{},endTime:{}", timeout, new DateTime(now),
               DateTime.now());
-          tronApp.getDbManager().eraseBlock();
+          mdcApp.getDbManager().eraseBlock();
           return BlockProductionCondition.TIME_OUT;
         }
       }
@@ -283,7 +283,7 @@ public class WitnessService implements Service {
       broadcastBlock(block);
 
       return BlockProductionCondition.PRODUCED;
-    } catch (TronException e) {
+    } catch (MdcException e) {
       logger.error(e.getMessage(), e);
       return BlockProductionCondition.EXCEPTION_PRODUCING_BLOCK;
     } finally {
@@ -307,7 +307,7 @@ public class WitnessService implements Service {
 
   private void broadcastBlock(BlockCapsule block) {
     try {
-      tronNetService.broadcast(new BlockMessage(block.getData()));
+      MdcNetService.broadcast(new BlockMessage(block.getData()));
     } catch (Exception ex) {
       throw new RuntimeException("BroadcastBlock error");
     }
@@ -317,7 +317,7 @@ public class WitnessService implements Service {
                                      Boolean lastHeadBlockIsMaintenance)
       throws ValidateSignatureException, ContractValidateException, ContractExeException,
       UnLinkedBlockException, ValidateScheduleException, AccountResourceInsufficientException {
-    return tronApp.getDbManager().generateBlock(this.localWitnessStateMap.get(witnessAddress), when,
+    return mdcApp.getDbManager().generateBlock(this.localWitnessStateMap.get(witnessAddress), when,
         this.privateKeyMap.get(witnessAddress), lastHeadBlockIsMaintenance, true);
   }
 
@@ -388,7 +388,7 @@ public class WitnessService implements Service {
     //This address does not need to have an account
     byte[] privateKeyAccountAddress = ECKey.fromPrivate(privateKey).getAddress();
 
-    WitnessCapsule witnessCapsule = this.tronApp.getDbManager().getWitnessStore()
+    WitnessCapsule witnessCapsule = this.mdcApp.getDbManager().getWitnessStore()
         .get(witnessAccountAddress);
     // need handle init witness
     if (null == witnessCapsule) {

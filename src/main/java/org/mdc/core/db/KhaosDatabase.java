@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Component
-public class KhaosDatabase extends TronDatabase {
+public class KhaosDatabase extends MdcDatabase {
 
   public static class KhaosBlock {
 

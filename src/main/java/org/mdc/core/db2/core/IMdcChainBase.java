@@ -7,7 +7,7 @@ import org.mdc.core.exception.ItemNotFoundException;
 
 import java.util.Map.Entry;
 
-public interface ITronChainBase<T> extends Iterable<Entry<byte[], T>>, Quitable {
+public interface IMdcChainBase<T> extends Iterable<Entry<byte[], T>>, Quitable {
 
   /**
    * reset the database.

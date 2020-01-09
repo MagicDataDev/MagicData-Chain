@@ -19,16 +19,16 @@ package org.mdc.core.net.message;
 
 import org.mdc.common.overlay.message.Message;
 
-public abstract class TronMessage extends Message {
+public abstract class MdcMessage extends Message {
 
-  public TronMessage() {
+  public MdcMessage() {
   }
 
-  public TronMessage(byte[] rawData) {
+  public MdcMessage(byte[] rawData) {
     super(rawData);
   }
 
-  public TronMessage(byte type, byte[] rawData) {
+  public MdcMessage(byte type, byte[] rawData) {
     super(type, rawData);
   }
 }

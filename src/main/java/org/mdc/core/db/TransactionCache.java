@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 
 @Slf4j
-public class TransactionCache extends TronStoreWithRevoking<BytesCapsule> {
+public class TransactionCache extends MdcStoreWithRevoking<BytesCapsule> {
 
   @Autowired
   public TransactionCache(@Value("trans-cache") String dbName) {

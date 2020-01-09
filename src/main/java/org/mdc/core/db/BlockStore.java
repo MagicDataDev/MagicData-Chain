@@ -31,7 +31,7 @@ import java.util.stream.Collectors;
 
 @Slf4j(topic = "DB")
 @Component
-public class BlockStore extends TronStoreWithRevoking<BlockCapsule> {
+public class BlockStore extends MdcStoreWithRevoking<BlockCapsule> {
 
   @Autowired
   private BlockStore(@Value("block") String dbName) {

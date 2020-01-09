@@ -1,6 +1,6 @@
 package org.mdc.core.exception;
 
-public class ContractValidateException extends TronException {
+public class ContractValidateException extends MdcException {
 
   public ContractValidateException() {
     super();

@@ -53,8 +53,8 @@ import org.mdc.core.config.Parameter.ChainConstant;
 import org.mdc.core.config.args.Args;
 import org.mdc.core.db.*;
 import org.mdc.core.exception.*;
-import org.mdc.core.net.TronNetDelegate;
-import org.mdc.core.net.TronNetService;
+import org.mdc.core.net.MdcNetDelegate;
+import org.mdc.core.net.MdcNetService;
 import org.mdc.core.net.message.TransactionMessage;
 import org.mdc.protos.Contract.AssetIssueContract;
 import org.mdc.protos.Contract.CreateSmartContract;
@@ -86,9 +86,9 @@ public class Wallet {
   @Getter
   private final ECKey ecKey;
   @Autowired
-  private TronNetService tronNetService;
+  private MdcNetService MdcNetService;
   @Autowired
-  private TronNetDelegate tronNetDelegate;
+  private MdcNetDelegate MdcNetDelegate;
   @Autowired
   private Manager dbManager;
   @Autowired
@@ -365,14 +365,14 @@ public class Wallet {
     try {
       Message message = new TransactionMessage(signaturedTransaction.toByteArray());
       if (minEffectiveConnection != 0) {
-        if (tronNetDelegate.getActivePeer().isEmpty()) {
+        if (MdcNetDelegate.getActivePeer().isEmpty()) {
           logger.warn("Broadcast transaction {} failed, no connection.", trx.getTransactionId());
           return builder.setResult(false).setCode(response_code.NO_CONNECTION)
               .setMessage(ByteString.copyFromUtf8("no connection"))
               .build();
         }
 
-        int count = (int) tronNetDelegate.getActivePeer().stream()
+        int count = (int) MdcNetDelegate.getActivePeer().stream()
             .filter(p -> !p.isNeedSyncFromUs() && !p.isNeedSyncFromPeer())
             .count();
 
@@ -407,7 +407,7 @@ public class Wallet {
         trx.resetResult();
       }
       dbManager.pushTransaction(trx);
-      tronNetService.broadcast(message);
+      MdcNetService.broadcast(message);
       logger.info("Broadcast transaction {} successfully.", trx.getTransactionId());
       return builder.setResult(true).setCode(response_code.SUCCESS).build();
     } catch (ValidateSignatureException e) {

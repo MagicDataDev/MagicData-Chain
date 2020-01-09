@@ -6,7 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.mdc.common.utils.ByteArray;
 import org.mdc.core.capsule.AccountCapsule;
 import org.mdc.core.db.common.WrappedByteArray;
-import org.mdc.core.db2.core.ITronChainBase;
+import org.mdc.core.db2.core.IMdcChainBase;
 import org.mdc.protos.Protocol.Account;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -23,7 +23,7 @@ public class AccountIndex extends AbstractIndex<AccountCapsule, Account> {
   public static SimpleAttribute<WrappedByteArray, String> Account_ADDRESS;
 
   @Autowired
-  public AccountIndex(@Qualifier("accountStore") final ITronChainBase<AccountCapsule> database) {
+  public AccountIndex(@Qualifier("accountStore") final IMdcChainBase<AccountCapsule> database) {
     super(database);
   }
 

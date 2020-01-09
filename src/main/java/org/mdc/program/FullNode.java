@@ -5,7 +5,7 @@ import ch.qos.logback.classic.joran.JoranConfigurator;
 import lombok.extern.slf4j.Slf4j;
 import org.mdc.common.application.Application;
 import org.mdc.common.application.ApplicationFactory;
-import org.mdc.common.application.TronApplicationContext;
+import org.mdc.common.application.MdcApplicationContext;
 import org.mdc.core.config.DefaultConfig;
 import org.mdc.core.config.args.Args;
 import org.mdc.core.services.RpcApiService;
@@ -60,8 +60,8 @@ public class FullNode {
 
     DefaultListableBeanFactory beanFactory = new DefaultListableBeanFactory();
     beanFactory.setAllowCircularReferences(false);
-    TronApplicationContext context =
-        new TronApplicationContext(beanFactory);
+    MdcApplicationContext context =
+        new MdcApplicationContext(beanFactory);
     context.register(DefaultConfig.class);
 
     context.refresh();

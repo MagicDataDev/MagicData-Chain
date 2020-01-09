@@ -1,6 +1,6 @@
 package org.mdc.core.exception;
 
-public class TooBigTransactionResultException extends TronException {
+public class TooBigTransactionResultException extends MdcException {
 
   public TooBigTransactionResultException() {
     super("too big transaction result");

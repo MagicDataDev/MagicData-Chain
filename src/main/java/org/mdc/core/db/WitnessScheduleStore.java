@@ -14,7 +14,7 @@ import java.util.Optional;
 
 @Slf4j(topic = "DB")
 @Component
-public class WitnessScheduleStore extends TronStoreWithRevoking<BytesCapsule> {
+public class WitnessScheduleStore extends MdcStoreWithRevoking<BytesCapsule> {
 
   private static final byte[] ACTIVE_WITNESSES = "active_witnesses".getBytes();
   private static final byte[] CURRENT_SHUFFLED_WITNESSES = "current_shuffled_witnesses".getBytes();

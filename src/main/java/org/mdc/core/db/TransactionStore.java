@@ -18,7 +18,7 @@ import java.util.Objects;
 
 @Slf4j(topic = "DB")
 @Component
-public class TransactionStore extends TronStoreWithRevoking<TransactionCapsule> {
+public class TransactionStore extends MdcStoreWithRevoking<TransactionCapsule> {
 
   @Autowired
   private BlockStore blockStore;

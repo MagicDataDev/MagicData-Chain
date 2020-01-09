@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 
 @Slf4j(topic = "DB")
 @Component
-public class ContractStore extends TronStoreWithRevoking<ContractCapsule> {
+public class ContractStore extends MdcStoreWithRevoking<ContractCapsule> {
 
   @Autowired
   private ContractStore(@Value("contract") String dbName) {
